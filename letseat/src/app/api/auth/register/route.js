@@ -18,7 +18,6 @@ export async function POST(request) {
 
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
-
     const newUser = await prisma.user.create({
       data: {
         email,
@@ -35,3 +34,5 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
   }
 }
+
+//curl -X POST http://localhost:3000/api/auth/register -H "Content-Type: application/json" -d '{"email":"test@example.com","password":"sekret"}'

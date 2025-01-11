@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import prisma from '';
+import prisma from '@/lib/prisma';
 
 export async function GET() {
   try {
@@ -34,3 +34,5 @@ export async function POST(request) {
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+//curl -X POST http://localhost:3000/api/restaurants -H "Content-Type: application/json" -d '{"name":"Pizzeria Roma","address":"ul. Roma 10","cuisine":"Italian"}'
