@@ -27,12 +27,14 @@ model Restaurant {
   address  String?
   cuisine  String?
   dishes   Dish[]
+//  owner    User    @relation(fields: [userId], references: [id])
 }
 
 model Dish {
   id            String    @id @default(uuid())
   name          String
   price         Float      
+  description   String?
   restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId  String
   OrderItem     OrderItem[]

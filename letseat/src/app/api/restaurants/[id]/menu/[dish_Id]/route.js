@@ -27,7 +27,7 @@ export async function PUT(request, { params }) {
   try {
     const { id, dishId } = params;
     const body = await request.json();
-    const { name, price } = body;
+    const { name, price, discriprion } = body;
 
     const updatedDish = await prisma.dish.updateMany({
       where: {
@@ -37,6 +37,7 @@ export async function PUT(request, { params }) {
       data: {
         name,
         price,
+        discriprion,
       },
     });
 

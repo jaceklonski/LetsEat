@@ -1,22 +1,24 @@
 "use client";
 import { useState } from "react";
 
-export default function AddRestaurant() {
+export default function AddDish() {
+  const id = "07e2bafb-be3a-4287-9399-8aba1fff96cd";
+
   const [name, setName] = useState("");
-  const [address, setAddress] = useState("");
-  const [cuisine, setCuisine] = useState("");
+  const [price, setPrice] = useState(0);
+  const [description, setDescription] = useState("");
 
   const onClick = async () => {
     try {
-      const res = await fetch("/api/restaurants", {
+      const res = await fetch(`/api/restaurants/${id}/menu`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: name,
-          address: address,
-          cuisine: cuisine,
+          price: parseFloat(price),
+          description: description,
         }),
       });
 
@@ -27,8 +29,8 @@ export default function AddRestaurant() {
       }
 
       const data = await res.json();
-      console.log("Restaurant added:", data);
-      alert("Restaurant successfuly added");
+      console.log("Dish added:", data);
+      alert("Dish successfully added");
     } catch (err) {
       console.error("Fetch error:", err);
     }
@@ -36,36 +38,36 @@ export default function AddRestaurant() {
 
   return (
     <div>
-      <div>Add your restaurant</div>
+      <div>Add dish to your menu</div>
       <div>
-        <div>Restaurant name</div>
+        <div>Name</div>
         <input
           type="text"
-          placeholder="Restaurant name"
-          value={email}
+          placeholder="Name"
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div>
-        <div>Restaurant address:</div>
+        <div>Price</div>
         <input
-          type="text"
-          placeholder="Restaurant address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
+          type="number"
+          placeholder="Price"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
         />
       </div>
       <div>
-        <div>Restaurants cuisine</div>
+        <div>Description</div>
         <input
           type="text"
-          placeholder="Chose restaurants cuisine"
-          value={cuisine}
-          onChange={(e) => setCuisine(e.target.value)}
+          placeholder="Item description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
       </div>
       <div>
-        <button onClick={onClick}>Add Restaurant</button>
+        <button onClick={onClick}>Add dish</button>
       </div>
     </div>
   );
