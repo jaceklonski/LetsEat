@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function RegisterForm({role}) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const router = useRouter();
 
   const onClick = async () => {
     try {
@@ -28,6 +31,7 @@ export default function RegisterForm({role}) {
       const data = await res.json();
       console.log("Registration success:", data);
       alert("Konto zostało utworzone!");
+      router.push("/login");
     } catch (err) {
       console.error("Fetch error:", err);
     }
