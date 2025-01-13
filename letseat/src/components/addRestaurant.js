@@ -42,12 +42,12 @@ export default function AddRestaurant() {
         <input
           type="text"
           placeholder="Restaurant name"
-          value={email}
+          value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div>
-        <div>Restaurant address:</div>
+        <div>Restaurant address</div>
         <input
           type="text"
           placeholder="Restaurant address"
@@ -59,7 +59,7 @@ export default function AddRestaurant() {
         <div>Restaurants cuisine</div>
         <input
           type="text"
-          placeholder="Chose restaurants cuisine"
+          placeholder="Choose cuisine"
           value={cuisine}
           onChange={(e) => setCuisine(e.target.value)}
         />

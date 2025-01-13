@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import prisma from '@/lib/prisma';
+import jwt from 'jsonwebtoken'
 
 export async function POST(request) {
   try {
@@ -10,7 +11,6 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing email or password' }, { status: 400 });
     }
 
-    // Szukamy użytkownika w bazie
     const user = await prisma.user.findUnique({
       where: { email },
     });
@@ -19,25 +19,28 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    // Porównujemy hasło z zahashowanym passwordHash
     const isPasswordValid = await bcrypt.compare(password, user.passwordHash);
     if (!isPasswordValid) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
-    // Hasło się zgadza – można zalogować
-    // Na tym etapie można np. ustawić sesję, wygenerować JWT itp.
-
-    // Dla bezpieczeństwa nie zwracamy passwordHash
     const { passwordHash, ...userData } = user;
 
-    // W tym przykładzie zwrócimy tylko informacje o użytkowniku (bez tokenu)
-    return NextResponse.json({
-      message: 'Logged in successfully',
-      user: userData,
-    }, { status: 200 });
+    const token = jwt.sign(
+      { id: userData.id, role: userData.role },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    return NextResponse.json(
+      { message: 'Logged in successfully', token },
+      { status: 200 }
+    );
+
   } catch (error) {
     console.error('POST /api/auth/login error:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
+
+//curl -X POST http://localhost:3000/api/auth/login -H "Content-Type: application/json" -d '{"email":"test@example.com","password":"sekret"}'

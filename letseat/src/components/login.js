@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const router = useRouter();
 
   const onClick = async () => {
     try {
@@ -25,8 +27,10 @@ export default function LogIn() {
       }
 
       const data = await res.json();
-      console.log("Registration success:", data);
-      alert("Logged in!");
+      console.log("login success:", data);
+      localStorage.setItem("token", data.token);
+      router.push("/home");
+
     } catch (err) {
       console.error("Fetch error:", err);
     }

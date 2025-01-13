@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function RegisterForm() {
+export default function RegisterForm({role}) {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
 
@@ -15,6 +15,7 @@ export default function RegisterForm() {
         body: JSON.stringify({
           email: email,
           password: pass,
+          role: role,
         }),
       });
 

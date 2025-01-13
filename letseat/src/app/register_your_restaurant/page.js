@@ -3,6 +3,7 @@ import RegisterForm from "@/components/register"
 export default function Register(){
   return (
     <>
-    <RegisterForm role = {"USER"}/>
+    <h1>Register your restaurant</h1>
+    <RegisterForm role = {"RESTAURANT"}/>
     </>)
 }
