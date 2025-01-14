@@ -35,38 +35,45 @@ export default function AddRestaurant() {
   };
 
   return (
-    <div>
-      <div>Add your restaurant</div>
-      <div>
+    <div class="content">
+    <div class="window">
+      <div id="login">Add your restaurant</div>
+      <div class="container">
         <div>Restaurant name</div>
         <input
+          class="input"
           type="text"
           placeholder="Restaurant name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
       </div>
-      <div>
+      <div class="container">
         <div>Restaurant address</div>
         <input
           type="text"
+          class="input"
           placeholder="Restaurant address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
         />
       </div>
-      <div>
+      <div class="container">
         <div>Restaurants cuisine</div>
         <input
           type="text"
+          class="input"
           placeholder="Choose cuisine"
           value={cuisine}
           onChange={(e) => setCuisine(e.target.value)}
         />
       </div>
-      <div>
-        <button onClick={onClick}>Add Restaurant</button>
+      <div class="buttonContainer">
+        <button
+        class="button"
+        onClick={onClick}>Add Restaurant</button>
       </div>
+    </div>
     </div>
   );
 }

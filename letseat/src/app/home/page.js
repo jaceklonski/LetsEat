@@ -1,4 +1,5 @@
 "use client";
+import Navigation from "@/components/Navigation";
 import RestaurantsList from "@/components/restaurantlist"
 import useRequireRole from "@/lib/checkpermit";
 
@@ -16,6 +17,7 @@ export default function Register(){
 
   return (
   <div>
+    <Navigation/>
     <RestaurantsList/>
   </div>)
 }

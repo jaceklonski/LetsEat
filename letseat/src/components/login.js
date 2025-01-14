@@ -37,29 +37,35 @@ export default function LogIn() {
   };
 
   return (
-    <div>
-      <div>Log in</div>
-      <div>
+    <div class="content">
+    <div class="window">
+      <div id="login">Log in</div>
+      <div class="container">
         <div>Email address</div>
         <input
           type="text"
+          class="input"
           placeholder="Email address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
-      <div>
+      <div class="container">
         <div>Password</div>
         <input
           type="password"
+          class="input"
           placeholder="Password"
           value={pass}
           onChange={(e) => setPass(e.target.value)}
         />
       </div>
-      <div>
-        <button onClick={onClick}>Log in</button>
+      <div class="buttonContainer">
+        <button 
+        class="button"
+        onClick={onClick}>Log in</button>
       </div>
+    </div>
     </div>
   );
 }

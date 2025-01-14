@@ -30,15 +30,17 @@ export default function RestaurantsList() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
-      <h1>Lista Restauracji</h1>
+    <div class="content">
+      <h1>Restaurants:</h1>
       {restaurants.map((restaurant) => (
         <div
+          class="restaurant"
           key={restaurant.id}
-          onClick={() => router.push(`/home/${restaurant.id}`)}
-        >
-          <div><strong>{restaurant.name}</strong></div>
-          <div>{restaurant.cuisine}</div>
+          onClick={() => router.push(`/home/${restaurant.id}`)}>
+          <div class="top">
+            <div><strong>{restaurant.name}</strong></div>
+            <div>{restaurant.cuisine}</div>
+          </div>
           <div>{restaurant.address}</div>
         </div>
       ))}
