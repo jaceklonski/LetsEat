@@ -2,7 +2,7 @@
 import { useState } from "react";
 
 export default function AddDish() {
-  const id = "07e2bafb-be3a-4287-9399-8aba1fff96cd";
+  const id = "106ba821-b05b-43d7-a0e4-4be207c129f7";
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);

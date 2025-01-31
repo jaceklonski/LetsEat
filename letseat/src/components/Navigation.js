@@ -3,6 +3,7 @@ export default function Navigation(){
         <div class="logo">
         <a>Let's Eat</a>
         </div>
+        <div class="divider"></div>
         <div class="nav">
         <a href="/partnerwithus" class="click">Add Restaurant</a>
         <a href="/register" class="click">Register</a>
