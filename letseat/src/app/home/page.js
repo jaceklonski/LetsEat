@@ -4,7 +4,6 @@ import RestaurantsList from "@/components/restaurantlist"
 import useRequireRole from "@/lib/checkpermit";
 
 export default function Register(){
-
   const { authorized, loading } = useRequireRole("USER");
 
   if (loading) {

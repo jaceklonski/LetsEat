@@ -14,20 +14,22 @@ enum Role {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  email        String   @unique
+  id           String       @id @default(uuid())
+  email        String       @unique
   passwordHash String
-  role         Role     @default(USER)
+  role         Role         @default(USER)
   orders       Order[]
+  restaurants  Restaurant[] @relation("UserRestaurants")
 }
 
 model Restaurant {
-  id       String  @id @default(uuid())
-  name     String
-  address  String?
-  cuisine  String?
-  dishes   Dish[]
-//  owner    User    @relation(fields: [userId], references: [id])
+  id        String    @id @default(uuid())
+  name      String
+  address   String?
+  cuisine   String?
+  dishes    Dish[]
+  userId    String
+  owner     User      @relation("UserRestaurants", fields: [userId], references: [id])
 }
 
 model Dish {

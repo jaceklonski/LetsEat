@@ -33,12 +33,12 @@ export default function useRequireRole(requiredRole) {
       decoded = parseJwt(token)
     } catch (error) {
       console.error("Błąd dekodowania tokenu:", error);
-      router.push("/home");
+      setAuthorized(false);
       return;
     }
 
     if (!decoded.role || decoded.role !== requiredRole || decoded.role === "ADMIN") {
-      router.push("/home");
+      setAuthorized(false);
       return;
     }
 

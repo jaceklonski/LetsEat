@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation";
 
 export default function RestaurantsList() {
   const [restaurants, setRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -17,6 +19,7 @@ export default function RestaurantsList() {
         }
         const data = await res.json();
         setRestaurants(data);
+        setFilteredRestaurants(data);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -26,18 +29,39 @@ export default function RestaurantsList() {
     fetchRestaurants();
   }, []);
 
+  useEffect(() => {
+    if (searchTerm === "") {
+      setFilteredRestaurants(restaurants);
+    } else {
+      const lowercasedTerm = searchTerm.toLowerCase();
+      const filtered = restaurants.filter((restaurant) =>
+        restaurant.name.toLowerCase().includes(lowercasedTerm) ||
+        restaurant.cuisine.toLowerCase().includes(lowercasedTerm) ||
+        restaurant.address.toLowerCase().includes(lowercasedTerm)
+      );
+      setFilteredRestaurants(filtered);
+    }
+  }, [searchTerm, restaurants]);
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div class="content">
+    <div className="content">
       <h1>Restaurants:</h1>
-      {restaurants.map((restaurant) => (
+      <input
+        type="text"
+        placeholder="Search restaurants..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+      {filteredRestaurants.map((restaurant) => (
         <div
-          class="restaurant"
+          className="restaurant"
           key={restaurant.id}
-          onClick={() => router.push(`/home/${restaurant.id}`)}>
-          <div class="top">
+          onClick={() => router.push(`/home/${restaurant.id}`)}
+        >
+          <div className="top">
             <div><strong>{restaurant.name}</strong></div>
             <div>{restaurant.cuisine}</div>
           </div>

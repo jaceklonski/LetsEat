@@ -2,51 +2,39 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function GET(request, { params }) {
+  const resolvedParams = await params;
   try {
-    const { id } = params;
-
-    const restaurant = await prisma.restaurant.findUnique({
-      where: { id },
+    const { id } = resolvedParams;
+    const dishes = await prisma.dish.findMany({
+      where: { restaurantId: id },
     });
-
-    if (!restaurant) {
-      return NextResponse.json({ error: 'Not found' }, { status: 404 });
-    }
-
-    return NextResponse.json(restaurant, { status: 200 });
+    return NextResponse.json(dishes, { status: 200 });
   } catch (error) {
-    console.error(`GET /api/restaurants/${params.id} error:`, error);
+
+    console.error(`GET /api/restaurants/${(await params).id}/menu error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
-export async function PUT(request, { params }) {
+
+export async function POST(request, { params }) {
+  const resolvedParams = await params;
   try {
-    const { id } = params;
+    const { id } = resolvedParams;
     const body = await request.json();
+    const { name, price, description } = body;
 
-    const updatedRestaurant = await prisma.restaurant.update({
-      where: { id },
-      data: body,
+    const newDish = await prisma.dish.create({
+      data: {
+        name,
+        price: parseFloat(price),
+        description,
+        restaurantId: id,
+      },
     });
 
-    return NextResponse.json(updatedRestaurant, { status: 200 });
+    return NextResponse.json(newDish, { status: 201 });
   } catch (error) {
-    console.error(`PUT /api/restaurants/${params.id} error:`, error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
-
-export async function DELETE(request, { params }) {
-  try {
-    const { id } = params;
-
-    await prisma.restaurant.delete({
-      where: { id },
-    });
-
-    return NextResponse.json(null, { status: 204 });
-  } catch (error) {
-    console.error(`DELETE /api/restaurants/${params.id} error:`, error);
+    console.error(`POST /api/restaurants/${(await params).id}/menu error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

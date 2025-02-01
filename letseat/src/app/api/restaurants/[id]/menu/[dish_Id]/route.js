@@ -2,12 +2,13 @@ import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
 export async function GET(request, { params }) {
+  const resolvedParams = await params;
   try {
-    const { id, dishId } = params;
+    const { id, dish_Id } = resolvedParams;
     const dish = await prisma.dish.findFirst({
       where: { 
-        id: dishId,
-        restaurantId: id
+        id: dish_Id,
+        restaurantId: id,
       },
     });
     if (!dish) {
@@ -15,29 +16,27 @@ export async function GET(request, { params }) {
     }
     return NextResponse.json(dish, { status: 200 });
   } catch (error) {
-    console.error(
-      `GET /api/restaurants/${params.id}/menu/${params.dishId} error:`,
-      error
-    );
+    console.error(`GET /api/restaurants/${(await params).id}/menu/${(await params).dish_Id} error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function PUT(request, { params }) {
+  const resolvedParams = await params;
   try {
-    const { id, dishId } = params;
+    const { id, dish_Id } = resolvedParams;
     const body = await request.json();
-    const { name, price, discriprion } = body;
+    const { name, price, description } = body;
 
     const updatedDish = await prisma.dish.updateMany({
       where: {
-        id: dishId,
+        id: dish_Id,
         restaurantId: id,
       },
       data: {
         name,
-        price,
-        discriprion,
+        price: parseFloat(price),
+        description,
       },
     });
 
@@ -45,35 +44,30 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ error: 'Dish not found' }, { status: 404 });
     }
 
-    const dish = await prisma.dish.findUnique({ where: { id: dishId } });
+    const dish = await prisma.dish.findUnique({ where: { id: dish_Id } });
     return NextResponse.json(dish, { status: 200 });
   } catch (error) {
-    console.error(
-      `PUT /api/restaurants/${params.id}/menu/${params.dishId} error:`,
-      error
-    );
+    console.error(`PUT /api/restaurants/${(await params).id}/menu/${(await params).dish_Id} error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
 
 export async function DELETE(request, { params }) {
+  const resolvedParams = await params;
   try {
-    const { id, dishId } = params;
+    const { id, dish_Id } = resolvedParams;
 
     const existingDish = await prisma.dish.findFirst({
-      where: { id: dishId, restaurantId: id },
+      where: { id: dish_Id, restaurantId: id },
     });
     if (!existingDish) {
       return NextResponse.json({ error: 'Dish not found' }, { status: 404 });
     }
 
-    await prisma.dish.delete({ where: { id: dishId } });
+    await prisma.dish.delete({ where: { id: dish_Id } });
     return NextResponse.json(null, { status: 204 });
   } catch (error) {
-    console.error(
-      `DELETE /api/restaurants/${params.id}/menu/${params.dishId} error:`,
-      error
-    );
+    console.error(`DELETE /api/restaurants/${(await params).id}/menu/${(await params).dish_Id} error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }
