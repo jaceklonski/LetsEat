@@ -81,7 +81,7 @@ export default function EditDish() {
   if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
 
   return (
-    <div className="container">
+    <div>
       <h1>Edit Dish</h1>
       <form onSubmit={handleSubmit}>
         <div>

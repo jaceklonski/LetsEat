@@ -13,7 +13,17 @@ export default function RestaurantsList() {
   useEffect(() => {
     async function fetchRestaurants() {
       try {
-        const res = await fetch("/api/restaurants");
+        const token = localStorage.getItem("token");
+        if (!token) {
+          throw new Error("Brak tokena – użytkownik nie jest zalogowany.");
+        }
+  
+        const res = await fetch("/api/restaurants", {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
         if (!res.ok) {
           throw new Error("Fetch Error");
         }
@@ -27,7 +37,7 @@ export default function RestaurantsList() {
       }
     }
     fetchRestaurants();
-  }, []);
+  }, []); 
 
   useEffect(() => {
     if (searchTerm === "") {
@@ -47,7 +57,7 @@ export default function RestaurantsList() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="content">
+    <div>
       <h1>Restaurants:</h1>
       <input
         type="text"
@@ -57,11 +67,10 @@ export default function RestaurantsList() {
       />
       {filteredRestaurants.map((restaurant) => (
         <div
-          className="restaurant"
           key={restaurant.id}
           onClick={() => router.push(`/home/${restaurant.id}`)}
         >
-          <div className="top">
+          <div>
             <div><strong>{restaurant.name}</strong></div>
             <div>{restaurant.cuisine}</div>
           </div>

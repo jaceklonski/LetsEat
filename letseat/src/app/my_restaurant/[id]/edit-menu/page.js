@@ -56,16 +56,16 @@ export default function EditMenu() {
   if (error) return <div style={{ color: "red" }}>Error: {error}</div>;
 
   return (
-    <div className="content">
+    <div>
       <h1>Edit Menu</h1>
       <AddDish restaurantId={restaurantId} onDishAdded={fetchDishes} />
       {dishes.length > 0 ? (
         <ul>
           {dishes.map((dish) => (
-            <li key={dish.id} className="dish-item">
+            <li key={dish.id}>
               <strong>{dish.name}</strong> - ${dish.price.toFixed(2)}
               {dish.description && <p>{dish.description}</p>}
-              <Link href={`/my_restaurant/${restaurantId}/edit-dish/${dish.id}`} className="action-link">
+              <Link href={`/my_restaurant/${restaurantId}/edit-dish/${dish.id}`}>
                 Edit Dish
               </Link>
             </li>

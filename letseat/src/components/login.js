@@ -7,18 +7,23 @@ export default function LogIn() {
   const [pass, setPass] = useState("");
   const router = useRouter();
 
-  function parseJwt (token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
+  // Funkcja do dekodowania tokena JWT
+  function parseJwt(token) {
+    // Jeśli token jest tablicą, łączymy go w jeden ciąg znaków
+    if (Array.isArray(token)) {
+      token = token.join('.');
+    }
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      window.atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
     return JSON.parse(jsonPayload);
-} // source: https://stackoverflow.com/questions/38552003/how-to-decode-jwt-token-in-javascript-without-using-a-library
-
-
-
+  }
+  
   const onClick = async () => {
     try {
       const res = await fetch("/api/auth/login", {
@@ -41,11 +46,20 @@ export default function LogIn() {
       const data = await res.json();
       console.log("Login success:", data);
 
-      localStorage.setItem("token", data.token);
+      // Pobieramy token i sprawdzamy, czy jest tablicą
+      let token = data.token;
+      if (Array.isArray(token)) {
+        token = token.join('.');
+      }
+      
+      // Zapisujemy token jako pojedynczy ciąg znaków
+      localStorage.setItem("token", token);
 
-      const decodedToken = parseJwt(data.token);
+      // Dekodujemy token, aby uzyskać rolę użytkownika
+      const decodedToken = parseJwt(token);
       const userRole = decodedToken.role; 
 
+      // Przekierowujemy w zależności od roli
       if (userRole === "RESTAURANT") {
         router.push("/my_restaurant");
       } else {
@@ -82,9 +96,7 @@ export default function LogIn() {
           />
         </div>
         <div className="buttonContainer">
-          <button 
-            className="button"
-            onClick={onClick}>
+          <button className="button" onClick={onClick}>
             Log in
           </button>
         </div>

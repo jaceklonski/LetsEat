@@ -10,7 +10,11 @@ export async function GET(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const token = authHeader.split(" ")[1];
+    let token = authHeader.split(" ")[1];
+    if (Array.isArray(token)) {
+      token = token.join('.');
+    }
+    
     let decoded;
     try {
       decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -50,9 +54,11 @@ export async function GET(request) {
 
     if (userRole === "RESTAURANT") {
       where.userId = userId;
-    } else if (userRole !== "ADMIN") {
+    } else if (userRole === "USER" || userRole === "ADMIN") {
+    } else {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
+
     const restaurants = await prisma.restaurant.findMany({
       where,
       include: {

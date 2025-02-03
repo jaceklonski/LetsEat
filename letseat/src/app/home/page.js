@@ -1,22 +1,15 @@
 "use client";
 import Navigation from "@/components/Navigation";
-import RestaurantsList from "@/components/restaurantlist"
-import useRequireRole from "@/lib/checkpermit";
+import OrderNotifications from "@/components/OrderNotifications";
+import RestaurantsList from "@/components/restaurantlist";
 
-export default function Register(){
-  const { authorized, loading } = useRequireRole("USER");
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (!authorized) {
-    return null;
-  }
-
+export default function Home() {
   return (
-  <div>
-    <Navigation/>
-    <RestaurantsList/>
-  </div>)
+    <div className="home-container">
+      <Navigation />
+      <h1>Home Page</h1>
+      <OrderNotifications />
+      <RestaurantsList />
+    </div>
+  );
 }
