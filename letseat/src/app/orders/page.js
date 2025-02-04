@@ -12,10 +12,8 @@ export default function OrdersPage() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        // Pobranie tokena z localStorage
         const token = localStorage.getItem("token");
         if (!token) {
-          // Jeśli token nie istnieje, przekieruj użytkownika do logowania
           router.push("/auth/login");
           return;
         }
@@ -53,7 +51,7 @@ export default function OrdersPage() {
       {orders.length > 0 ? (
         <ul>
           {orders.map((order) => (
-            <li key={order.id} style={{ border: "1px solid #ddd", padding: "10px", marginBottom: "10px" }}>
+            <li key={order.id}>
               <div><strong>Order ID:</strong> {order.id}</div>
               <div><strong>Status:</strong> {order.status}</div>
               <div>

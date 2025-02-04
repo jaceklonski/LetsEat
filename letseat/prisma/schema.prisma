@@ -23,20 +23,20 @@ model User {
 }
 
 model Restaurant {
-  id        String    @id @default(uuid())
-  name      String
-  address   String?
-  cuisine   String?
-  dishes    Dish[]
-  userId    String
-  orders    Order[]
-  owner     User      @relation("UserRestaurants", fields: [userId], references: [id])
+  id          String  @id @default(uuid())
+  name        String
+  address     String?
+  cuisine     String?
+  dishes      Dish[]
+  userId      String
+  owner       User      @relation("UserRestaurants", fields: [userId], references: [id])
+  orders      Order[]
 }
 
 model Dish {
   id            String    @id @default(uuid())
   name          String
-  price         Float      
+  price         Float
   description   String?
   restaurant    Restaurant @relation(fields: [restaurantId], references: [id])
   restaurantId  String
@@ -44,15 +44,16 @@ model Dish {
 }
 
 model Order {
-  id        String     @id @default(uuid())
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String
-  restaurant   Restaurant   @relation(fields: [restaurantId], references: [id])
-  restaurantId String
-  status    String
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  items     OrderItem[]
+  id            String       @id @default(uuid())
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  restaurant    Restaurant   @relation(fields: [restaurantId], references: [id])
+  restaurantId  String
+  status        String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  items         OrderItem[]
+  messages      OrderMessage[]
 }
 
 model OrderItem {
@@ -62,4 +63,14 @@ model OrderItem {
   dish     Dish    @relation(fields: [dishId], references: [id])
   dishId   String
   quantity Int
+}
+
+model OrderMessage {
+  id         String   @id @default(uuid())
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  senderId   String
+  senderRole Role
+  content    String
+  createdAt  DateTime @default(now())
 }

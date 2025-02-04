@@ -4,16 +4,13 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 export default function RestaurantOrders() {
-  const { id: restaurantId } = useParams(); // dynamiczny parametr [id]
+  const { id: restaurantId } = useParams();
   const router = useRouter();
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  /**
-   * Pobiera zamówienia z /api/orders, filtrując po restaurantId
-   */
   const fetchOrders = async () => {
     setLoading(true);
     setError("");
@@ -24,7 +21,6 @@ export default function RestaurantOrders() {
         return;
       }
 
-      // Kluczowa zmiana: używamy endpointu /api/orders?restaurantId=...
       const res = await fetch(`/api/orders?restaurantId=${restaurantId}`, {
         method: "GET",
         headers: {
@@ -45,9 +41,6 @@ export default function RestaurantOrders() {
     }
   };
 
-  /**
-   * Aktualizuje status zamówienia (PUT /api/orders/[orderId])
-   */
   const updateOrderStatus = async (orderId, newStatus) => {
     try {
       const token = localStorage.getItem("token");
@@ -70,7 +63,6 @@ export default function RestaurantOrders() {
       }
       const updatedOrder = await res.json();
 
-      // Aktualizujemy stan zamówień – znajdujemy zamówienie i aktualizujemy jego status w liście
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === orderId ? { ...order, status: updatedOrder.status } : order
@@ -82,7 +74,6 @@ export default function RestaurantOrders() {
     }
   };
 
-  // Przy pierwszym załadowaniu (i zmianie restaurantId) – pobierz zamówienia
   useEffect(() => {
     if (restaurantId) {
       fetchOrders();
