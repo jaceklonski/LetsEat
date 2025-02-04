@@ -57,7 +57,7 @@ export default function RestaurantsList() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div>
+    <div className="content">
       <h1>Restaurants:</h1>
       <input
         type="text"
@@ -67,6 +67,7 @@ export default function RestaurantsList() {
       />
       {filteredRestaurants.map((restaurant) => (
         <div
+          className="restaurant"
           key={restaurant.id}
           onClick={() => router.push(`/home/${restaurant.id}`)}
         >

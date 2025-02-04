@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import NavigationClient from "@/components/NavigationClient";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -46,40 +47,46 @@ export default function OrdersPage() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="orders-page">
-      <h1>Your Orders</h1>
-      {orders.length > 0 ? (
-        <ul>
-          {orders.map((order) => (
-            <li key={order.id}>
-              <div><strong>Order ID:</strong> {order.id}</div>
-              <div><strong>Status:</strong> {order.status}</div>
-              <div>
-                <strong>Created:</strong> {new Date(order.createdAt).toLocaleString()}
-              </div>
-              {order.updatedAt && (
+    <>
+    <NavigationClient/>
+    <div className="content">
+      <div className="window">
+        <h1>Your Orders</h1>
+        {orders.length > 0 ? (
+          <ul>
+            {orders.map((order) => (
+              <li className="item" key={order.id} onClick={() => router.push(`/orders/${order.id}`)}>
+                <div><strong>Order ID:</strong> {order.id}</div>
+                <div><strong>Status:</strong> {order.status}</div>
                 <div>
-                  <strong>Updated:</strong> {new Date(order.updatedAt).toLocaleString()}
+                  <strong>Created:</strong> {new Date(order.createdAt).toLocaleString()}
                 </div>
-              )}
-              {order.items && order.items.length > 0 && (
-                <div>
-                  <strong>Items:</strong>
-                  <ul>
-                    {order.items.map((item) => (
-                      <li key={item.id}>
-                        {item.dish.name} - Quantity: {item.quantity}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No orders found.</p>
-      )}
+                {order.updatedAt && (
+                  <div>
+                    <strong>Updated:</strong> {new Date(order.updatedAt).toLocaleString()}
+                  </div>
+                )}
+                {order.items && order.items.length > 0 && (
+                  <div>
+                    <strong>Items:</strong>
+                    <ul>
+                      {order.items.map((item) => (
+                        <li key={item.id}>
+                          {item.dish.name} - Quantity: {item.quantity}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div>Click to chat with restaurant</div>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No orders found.</p>
+        )}
+      </div>
     </div>
+    </>
   );
 }

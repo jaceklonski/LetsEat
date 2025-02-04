@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import mqtt from "mqtt";
+import NavigationClient from "@/components/NavigationClient";
 
 export default function UserOrderChatPage() {
   const { orderId } = useParams();
@@ -104,23 +105,29 @@ export default function UserOrderChatPage() {
   };
 
   return (
-    <div>
-      <h2>User Chat – Order: {orderId}</h2>
-      <div>
+    <>
+    <NavigationClient/>
+    <div className="content">
+    <div className="window">
+      <h4>User Chat – Order: {orderId}</h4>
+      <div className="chat">
         {messages.map((m, i) => (
           <div key={i}>{m}</div>
         ))}
       </div>
-      <div>
+      <div className="container2">
         <input
+        className="input2"
           type="text"
           value={inputVal}
           onChange={(e) => setInputVal(e.target.value)}
           onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }}
           placeholder="Type a message..."
         />
-        <button onClick={sendMessage}>Send</button>
+        <button className="button2" onClick={sendMessage}>Send</button>
       </div>
     </div>
+    </div>
+    </>
   );
 }

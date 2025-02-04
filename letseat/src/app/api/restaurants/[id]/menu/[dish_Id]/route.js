@@ -22,12 +22,15 @@ export async function GET(request, { params }) {
 }
 
 export async function PUT(request, { params }) {
+  // Upewnij się, że odpakowujemy parametry tylko raz
   const resolvedParams = await params;
+  console.log('Resolved Params in PUT:', resolvedParams);
+  const { id, dish_Id } = resolvedParams;
+  
   try {
-    const { id, dish_Id } = resolvedParams;
     const body = await request.json();
     const { name, price, description } = body;
-
+    
     const updatedDish = await prisma.dish.updateMany({
       where: {
         id: dish_Id,
@@ -39,15 +42,15 @@ export async function PUT(request, { params }) {
         description,
       },
     });
-
+    
     if (!updatedDish.count) {
       return NextResponse.json({ error: 'Dish not found' }, { status: 404 });
     }
-
+    
     const dish = await prisma.dish.findUnique({ where: { id: dish_Id } });
     return NextResponse.json(dish, { status: 200 });
   } catch (error) {
-    console.error(`PUT /api/restaurants/${(await params).id}/menu/${(await params).dish_Id} error:`, error);
+    console.error(`PUT /api/restaurants/${id}/menu/${dish_Id} error:`, error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

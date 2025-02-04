@@ -72,7 +72,7 @@ export default function AddDish({ restaurantId, onDishAdded }) {
         />
       </div>
       <div>
-        <button onClick={onClick}>Add Dish</button>
+        <button className="button2" onClick={onClick}>Add Dish</button>
       </div>
     </div>
   );

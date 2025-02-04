@@ -91,7 +91,8 @@ export default function RestaurantOrders() {
           {orders.map((order) => (
             <li
               key={order.id}
-              style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}
+              className="window2"
+              onClick={() => router.push(`/my_restaurant/${restaurantId}/orders/${order.id}`)}
             >
               <div>
                 <strong>Order ID:</strong> {order.id}
@@ -119,7 +120,6 @@ export default function RestaurantOrders() {
                   </ul>
                 </div>
               )}
-              {/* Dropdown do zmiany statusu */}
               <div>
                 <label htmlFor={`status-${order.id}`}>Change status: </label>
                 <select

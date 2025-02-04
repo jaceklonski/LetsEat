@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import SearchBar from "@/components/SearchBar";
 
 export default function MyRestaurant() {
   const [restaurants, setRestaurants] = useState([]);
@@ -53,36 +52,38 @@ export default function MyRestaurant() {
 
   return (
     <div className="content">
-      <h1>Moja Restauracja</h1>
-      {restaurants.length > 0 ? (
-        restaurants.map((restaurant) => (
-          <div key={restaurant.id} className="restaurant-card">
-            <h2>{restaurant.name}</h2>
-            <p><strong>Kuchnia:</strong> {restaurant.cuisine}</p>
-            <p><strong>Adres:</strong> {restaurant.address || "Brak adresu"}</p>
-            <h3>Menu</h3>
-            {restaurant.dishes.length > 0 ? (
-              <ul>
-                {restaurant.dishes.map((dish) => (
-                  <li key={dish.id} className="dish-item">
-                    <strong>{dish.name}</strong> - ${dish.price.toFixed(2)}
-                    {dish.description && <p>{dish.description}</p>}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>Brak dań w menu.</p>
-            )}
-            <div className="restaurant-actions">
-              <Link href={`/my_restaurant/${restaurant.id}/edit`} className="action-link">Edit Restaurant</Link>
-              <Link href={`/my_restaurant/${restaurant.id}/edit-menu`} className="action-link">Edit Menu</Link>
-              <Link href={`/my_restaurant/${restaurant.id}/orders`} className="action-link">Orders</Link>
+      <div className="window">
+        <h1>Moja Restauracja</h1>
+        {restaurants.length > 0 ? (
+          restaurants.map((restaurant) => (
+            <div key={restaurant.id} className="restaurant-card">
+              <h2>{restaurant.name}</h2>
+              <p><strong>Kuchnia:</strong> {restaurant.cuisine}</p>
+              <p><strong>Adres:</strong> {restaurant.address || "Brak adresu"}</p>
+              <h3>Menu</h3>
+              {restaurant.dishes.length > 0 ? (
+                <ul>
+                  {restaurant.dishes.map((dish) => (
+                    <li key={dish.id} className="dish-item">
+                      <strong>{dish.name}</strong> - ${dish.price.toFixed(2)}
+                      {dish.description && <p>{dish.description}</p>}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>Brak dań w menu.</p>
+              )}
+              <div className="space">
+                <Link href={`/my_restaurant/${restaurant.id}/edit`} className="item">Edit Restaurant</Link>
+                <Link href={`/my_restaurant/${restaurant.id}/edit-menu`} className="item">Edit Menu</Link>
+                <Link href={`/my_restaurant/${restaurant.id}/orders`} className="item">Orders</Link>
+              </div>
             </div>
-          </div>
-        ))
-      ) : (
-        <p>Nie posiadasz żadnych restauracji.</p>
-      )}
+          ))
+        ) : (
+          <p>Nie posiadasz żadnych restauracji.</p>
+        )}
+      </div>
     </div>
   );
 }

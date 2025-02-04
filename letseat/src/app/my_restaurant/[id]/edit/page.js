@@ -4,6 +4,7 @@ import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function EditRestaurant({ params }) {
+  // Odpakowujemy obiekt params przed dostępem do jego właściwości
   const resolvedParams = use(params);
   const { id } = resolvedParams;
   const router = useRouter();
@@ -61,42 +62,43 @@ export default function EditRestaurant({ params }) {
     }
   };
 
-
   return (
-    <div className="container">
-      <h1>Edytuj restaurację</h1>
-      {error && <p className="error">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nazwa</label>
-          <input
-            type="text"
-            name="name"
-            value={restaurant.name}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label>Adres</label>
-          <input
-            type="text"
-            name="address"
-            value={restaurant.address}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Kuchnia</label>
-          <input
-            type="text"
-            name="cuisine"
-            value={restaurant.cuisine}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Zapisz zmiany</button>
-      </form>
+    <div className="content">
+      <div className="window">
+        <h1>Edytuj restaurację</h1>
+        {error && <p className="error">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Nazwa</label>
+            <input
+              type="text"
+              name="name"
+              value={restaurant.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div>
+            <label>Adres</label>
+            <input
+              type="text"
+              name="address"
+              value={restaurant.address}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label>Kuchnia</label>
+            <input
+              type="text"
+              name="cuisine"
+              value={restaurant.cuisine}
+              onChange={handleChange}
+            />
+          </div>
+          <button className="button" type="submit">Zapisz zmiany</button>
+        </form>
+      </div>
     </div>
   );
 }
